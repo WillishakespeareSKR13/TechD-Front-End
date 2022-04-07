@@ -3,8 +3,12 @@ import { AtomIcon, AtomImage, AtomText, AtomWrapper } from '@sweetsyui/ui';
 import { IRestaurant } from 'graphql';
 import React, { useMemo } from 'react';
 
-const TagRestaurant = (props: IRestaurant) => {
-  const { id, photo, name, cuisine_type, reviews } = props;
+type Props = IRestaurant & {
+  index?: number;
+};
+
+const TagRestaurant = (props: Props) => {
+  const { id, photo, name, cuisine_type, reviews, index } = props;
   const rating = useMemo(
     () =>
       Math.abs(
@@ -16,6 +20,18 @@ const TagRestaurant = (props: IRestaurant) => {
   return (
     <AtomWrapper
       key={id}
+      initial={{
+        x: -10,
+        opacity: 0,
+      }}
+      animate={{
+        x: 0,
+        opacity: 1,
+      }}
+      transition={{
+        duration: 0.4,
+        delay: (index ?? 0) * 0.2,
+      }}
       customCSS={css`
         width: 320px;
         display: flex;

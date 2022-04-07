@@ -194,8 +194,8 @@ const index: FC = () => {
               gap: 20px;
             `}
           >
-            {tagsInfo.map((e) => (
-              <TagInfo key={e.id} {...e} />
+            {tagsInfo.map((e, idx) => (
+              <TagInfo key={e.id} index={idx} {...e} />
             ))}
           </AtomWrapper>
         </AtomWrapper>
@@ -259,8 +259,8 @@ const index: FC = () => {
                 }
               `}
             >
-              {data?.getRestaurants?.map((e) => (
-                <TagRestaurant key={e?.id} {...e} />
+              {data?.getRestaurants?.map((e, idx) => (
+                <TagRestaurant key={e?.id} index={idx} {...e} />
               ))}
             </AtomCarrousell>
           </AtomWrapper>
@@ -327,8 +327,8 @@ const index: FC = () => {
                 }
               `}
             >
-              {data?.getRestaurants?.map((e) => (
-                <TagRestaurant key={e?.id} {...e} />
+              {data?.getRestaurants?.map((e, idx) => (
+                <TagRestaurant key={e?.id} index={idx} {...e} />
               ))}
             </AtomCarrousell>
           </AtomWrapper>

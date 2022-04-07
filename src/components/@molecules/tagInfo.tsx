@@ -6,12 +6,25 @@ type Props = {
   icon: string;
   title: string;
   description: string;
+  index?: number;
 };
 
 const TagInfo = (props: Props) => {
-  const { icon, title, description } = props;
+  const { icon, title, description, index } = props;
   return (
     <AtomWrapper
+      initial={{
+        x: -10,
+        opacity: 0,
+      }}
+      animate={{
+        x: 0,
+        opacity: 1,
+      }}
+      transition={{
+        duration: 0.4,
+        delay: (index ?? 0) * 0.2,
+      }}
       customCSS={css`
         display: flex;
         flex-direction: column;
