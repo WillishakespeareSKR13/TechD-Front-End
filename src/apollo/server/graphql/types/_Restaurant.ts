@@ -8,7 +8,7 @@ const typeDefs = gql`
     name: String
     neighborhood: String
     address: String
-    phone: String
+    photo: String
     cuisine_type: String
     operating_hours: OperatingHours
     reviews: [Review]
@@ -44,7 +44,7 @@ const typeDefs = gql`
     name: String
     neighborhood: String
     address: String
-    phone: String
+    photo: String
     cuisine_type: String
     operating_hours: OperatingHoursInput
     reviews: [ReviewInput]
@@ -79,7 +79,6 @@ const typeDefs = gql`
     name: String
     neighborhood: String
     address: String
-    phone: String
     cuisine_type: String
     operating_hours: OperatingHoursInputFilter
     reviews: [ReviewInputFilter]

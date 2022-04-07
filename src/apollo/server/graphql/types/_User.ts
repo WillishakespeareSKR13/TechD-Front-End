@@ -9,6 +9,7 @@ const typeDefs = gql`
     email: String
     password: String
     role: String
+    photo: String
   }
 
   type TokenUser {
@@ -22,6 +23,7 @@ const typeDefs = gql`
     email: String
     password: String
     role: String
+    photo: String
   }
 
   input FilterUser {

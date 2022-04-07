@@ -32,21 +32,9 @@ const resolvers: Resolvers = {
     },
 
     updateRestaurant: async (_, { id, input }) => {
-      const { name, address, phone, cuisine_type, operating_hours, reviews } =
-        input;
-
-      const restaurant = await Restaurants.findByIdAndUpdate(
-        id,
-        {
-          name,
-          address,
-          phone,
-          cuisine_type,
-          operating_hours,
-          reviews,
-        },
-        { new: true }
-      );
+      const restaurant = await Restaurants.findByIdAndUpdate(id, input, {
+        new: true,
+      });
 
       const getRestaurant = await Restaurants.findById(restaurant.id)
         .populate('company')

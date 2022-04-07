@@ -5,6 +5,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role: 'user' | 'company';
+  photo: string;
 }
 
 const UserSchema: Schema = new Schema(
@@ -20,6 +21,11 @@ const UserSchema: Schema = new Schema(
     password: {
       type: String,
       required: true,
+    },
+    photo: {
+      type: String,
+      default:
+        'https://via.placeholder.com/300/fff?text=No+Photo+Available.png',
     },
     role: {
       type: String,

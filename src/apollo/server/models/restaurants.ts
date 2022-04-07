@@ -5,6 +5,7 @@ export interface IRestaurants extends Document {
   name: string;
   neighborhood: string;
   address: string;
+  photo: string;
   latlng: {
     lat: number;
     lng: number;
@@ -37,6 +38,11 @@ const RestaurantsSchema: Schema = new Schema(
     name: {
       type: String,
       required: true,
+    },
+    photo: {
+      type: String,
+      default:
+        'https://via.placeholder.com/300/fff?text=No+Photo+Available.png',
     },
     neighborhood: {
       type: String,
