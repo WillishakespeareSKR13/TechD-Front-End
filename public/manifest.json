@@ -1,0 +1,9 @@
+{
+  "name": "Melp",
+  "short_name": "Melp",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#414E6A",
+  "theme_color": "#414E6A",
+  "orientation": "portrait-primary"
+}

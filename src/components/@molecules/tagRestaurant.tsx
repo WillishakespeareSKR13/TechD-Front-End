@@ -62,8 +62,9 @@ const TagRestaurant = (props: IRestaurant) => {
       >
         {!rating || rating === 0 ? (
           <>
-            {Array.from({ length: 5 }, () => (
+            {Array.from({ length: 5 }, (_, i) => (
               <AtomIcon
+                key={`${id}-disable-${i}`}
                 height="15px"
                 width="15px"
                 icon="/icons/star.svg"
@@ -79,8 +80,9 @@ const TagRestaurant = (props: IRestaurant) => {
           </>
         ) : (
           <>
-            {Array.from({ length: rating }, () => (
+            {Array.from({ length: rating }, (_, i) => (
               <AtomIcon
+                key={`${id}-up-${i}`}
                 height="15px"
                 width="15px"
                 icon="/icons/star.svg"
@@ -93,8 +95,9 @@ const TagRestaurant = (props: IRestaurant) => {
                 `}
               />
             ))}
-            {Array.from({ length: 5 - rating }, () => (
+            {Array.from({ length: 5 - rating }, (_, i) => (
               <AtomIcon
+                key={`${id}-down-${i}`}
                 height="15px"
                 width="15px"
                 icon="/icons/star.svg"
