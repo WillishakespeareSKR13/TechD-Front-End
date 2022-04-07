@@ -337,6 +337,13 @@ const index: FC = () => {
                   bottom: 0px;
                 }
               `}
+              skeleton={
+                loading
+                  ? Array.from({ length: 4 }, (_, idx) => (
+                      <TagRestaurantSkeleton key={`${idx}`} index={idx} />
+                    ))
+                  : []
+              }
             >
               {data?.getRestaurants?.map((e, idx) => (
                 <TagRestaurant key={e?.id} index={idx} {...e} />
