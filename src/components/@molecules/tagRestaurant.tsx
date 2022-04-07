@@ -80,6 +80,18 @@ const TagRestaurant = (props: Props) => {
           <>
             {Array.from({ length: 5 }, (_, i) => (
               <AtomIcon
+                initial={{
+                  x: -5,
+                  opacity: 0,
+                }}
+                animate={{
+                  x: 0,
+                  opacity: 1,
+                }}
+                transition={{
+                  duration: 0.4,
+                  delay: i * 0.1,
+                }}
                 key={`${id}-disable-${i}`}
                 height="15px"
                 width="15px"
@@ -98,6 +110,18 @@ const TagRestaurant = (props: Props) => {
           <>
             {Array.from({ length: rating }, (_, i) => (
               <AtomIcon
+                initial={{
+                  x: -5,
+                  opacity: 0,
+                }}
+                animate={{
+                  x: 0,
+                  opacity: 1,
+                }}
+                transition={{
+                  duration: 0.4,
+                  delay: i * 0.1,
+                }}
                 key={`${id}-up-${i}`}
                 height="15px"
                 width="15px"
@@ -113,6 +137,18 @@ const TagRestaurant = (props: Props) => {
             ))}
             {Array.from({ length: 5 - rating }, (_, i) => (
               <AtomIcon
+                initial={{
+                  x: -5,
+                  opacity: 0,
+                }}
+                animate={{
+                  x: 0,
+                  opacity: 1,
+                }}
+                transition={{
+                  duration: 0.4,
+                  delay: (5 - rating + i) * 0.1,
+                }}
                 key={`${id}-down-${i}`}
                 height="15px"
                 width="15px"
