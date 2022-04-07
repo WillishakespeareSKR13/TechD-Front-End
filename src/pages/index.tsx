@@ -2,7 +2,9 @@ import { useQuery } from '@apollo/client';
 import { css } from '@emotion/react';
 import { GETRESTAURANTS } from '@Src/apollo/client/query/restaurants';
 import TagInfo from '@Src/components/@molecules/tagInfo';
-import TagRestaurant from '@Src/components/@molecules/tagRestaurant';
+import TagRestaurant, {
+  TagRestaurantSkeleton,
+} from '@Src/components/@molecules/tagRestaurant';
 import {
   AtomButton,
   AtomImage,
@@ -38,7 +40,8 @@ const tagsInfo = [
 ];
 
 const index: FC = () => {
-  const { data } = useQuery<IQueryFilter<'getRestaurants'>>(GETRESTAURANTS);
+  const { data, loading } =
+    useQuery<IQueryFilter<'getRestaurants'>>(GETRESTAURANTS);
   return (
     <>
       <AtomSeo
@@ -224,6 +227,7 @@ const index: FC = () => {
               flex-wrap: wrap;
               flex-direction: row;
               justify-content: space-between;
+              height: 300px;
             `}
           >
             <AtomCarrousell
@@ -258,6 +262,13 @@ const index: FC = () => {
                   bottom: 0px;
                 }
               `}
+              skeleton={
+                loading
+                  ? Array.from({ length: 4 }, (_, idx) => (
+                      <TagRestaurantSkeleton key={`${idx}`} index={idx} />
+                    ))
+                  : []
+              }
             >
               {data?.getRestaurants?.map((e, idx) => (
                 <TagRestaurant key={e?.id} index={idx} {...e} />

@@ -11,6 +11,17 @@ const GlobalStyles: FC = () => (
         body {
           background-color: #fff1f1;
         }
+        @keyframes skeleton {
+          0% {
+            background-position: 200% 0%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 0%;
+          }
+        }
       `}
     />
   </>

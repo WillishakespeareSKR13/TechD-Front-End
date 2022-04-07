@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { AtomIcon, AtomImage, AtomText, AtomWrapper } from '@sweetsyui/ui';
 import { IRestaurant } from 'graphql';
-import React, { useMemo } from 'react';
+import { FC, useMemo } from 'react';
 
 type Props = IRestaurant & {
   index?: number;
@@ -170,3 +170,105 @@ const TagRestaurant = (props: Props) => {
 };
 
 export default TagRestaurant;
+
+type PropsSkeleton = {
+  key?: string;
+  index?: number;
+};
+
+export const TagRestaurantSkeleton: FC<PropsSkeleton> = (props) => {
+  const { key, index } = props;
+  return (
+    <AtomWrapper
+      key={key}
+      initial={{
+        x: -10,
+        opacity: 0,
+      }}
+      animate={{
+        x: 0,
+        opacity: 1,
+      }}
+      transition={{
+        duration: 0.4,
+        delay: (index ?? 0) * 0.2,
+      }}
+      customCSS={css`
+        width: 320px;
+        display: flex;
+        gap: 5px;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+      `}
+    >
+      <AtomWrapper
+        customCSS={css`
+          height: 200px;
+          border-radius: 8px;
+          overflow: hidden;
+          border: 1px solid #e6e6e6;
+          background: linear-gradient(
+            90deg,
+            #fff1f1 0%,
+            #ffffff 50%,
+            #fff1f1 100%
+          );
+          background-size: 200% 200%;
+          animation: skeleton 1.8s ease-in-out infinite;
+        `}
+      />
+      <AtomWrapper
+        customCSS={css`
+          height: 30px;
+          border-radius: 4px;
+          border: 1px solid #e6e6e6;
+          background: linear-gradient(
+            90deg,
+            #fff1f1 0%,
+            #ffffff 50%,
+            #fff1f1 100%
+          );
+          background-size: 200% 200%;
+          animation: skeleton 1.8s ease-in-out infinite;
+        `}
+      />
+
+      <AtomWrapper
+        customCSS={css`
+          height: 24px;
+          border-radius: 4px;
+          border: 1px solid #e6e6e6;
+          background: linear-gradient(
+            90deg,
+            #fff1f1 0%,
+            #ffffff 50%,
+            #fff1f1 100%
+          );
+          background-size: 200% 200%;
+          animation: skeleton 1.8s ease-in-out infinite;
+        `}
+      />
+      <AtomWrapper
+        customCSS={css`
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          gap: 2px;
+          width: 50%;
+          height: 15px;
+          border-radius: 4px;
+          border: 1px solid #e6e6e6;
+          background: linear-gradient(
+            90deg,
+            #fff1f1 0%,
+            #ffffff 50%,
+            #fff1f1 100%
+          );
+          background-size: 200% 200%;
+          animation: skeleton 1.8s ease-in-out infinite;
+        `}
+      />
+    </AtomWrapper>
+  );
+};
