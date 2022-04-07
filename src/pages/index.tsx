@@ -7,6 +7,7 @@ import {
   AtomButton,
   AtomImage,
   AtomInput,
+  AtomSeo,
   AtomText,
   AtomWrapper,
 } from '@sweetsyui/ui';
@@ -40,6 +41,12 @@ const index: FC = () => {
   const { data } = useQuery<IQueryFilter<'getRestaurants'>>(GETRESTAURANTS);
   return (
     <>
+      <AtomSeo
+        page="Home"
+        title="Melp"
+        website="https://melp.vercel.app/"
+        icon="/favicon.png"
+      />
       <AtomWrapper
         customCSS={css`
           align-items: center;
