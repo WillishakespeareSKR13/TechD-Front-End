@@ -1,8 +1,10 @@
 import { FC } from 'react';
 import LayoutAnimation from '@sweetsyui/ui/build/@layouts/LayoutAnimation';
 import { css } from '@emotion/react';
-import { AtomWrapper } from '@sweetsyui/ui';
+import Header from '@Src/components/@organisms/header';
 import AuthContext from '@Src/hooks/authContext';
+import { AtomContainer } from '@sweetsyui/ui';
+import Footer from '@Src/components/@organisms/footer';
 
 type Props = {
   Role?: string | string[];
@@ -21,20 +23,18 @@ const DefaultLayout: FC<Props> = ({ children }) => (
         background-position: center;
       `}
     >
-      <AtomWrapper
-        maxWidth="1440px"
+      <Header />
+      <AtomContainer
+        as="main"
         minHeight="100vh"
         height="100%"
         alignItems="center"
-        justifyContent="center"
-        customCSS={css`
-          @media only screen and (max-width: 980px) {
-            padding: 0px 30px;
-          }
-        `}
+        justifyContent="flex-start"
+        backgroundColor="#fff1f1"
       >
         {children}
-      </AtomWrapper>
+      </AtomContainer>
+      <Footer />
     </LayoutAnimation>
   </AuthContext>
 );
