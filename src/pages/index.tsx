@@ -46,12 +46,8 @@ const tagsInfo = [
 
 const index: NextPageFC = () => {
   const cordinates = useSelector((state: RootStateType) => state.cordinates);
-  const { data, loading } = useQuery<IQueryFilter<'getRestaurants'>>(
-    GETRESTAURANTS,
-    {
-      skip: cordinates.lat === 0 && cordinates.lng === 0,
-    }
-  );
+  const { data, loading } =
+    useQuery<IQueryFilter<'getRestaurants'>>(GETRESTAURANTS);
   const dispatch = useDispatch();
   useEffect(() => {
     if (navigator.geolocation) {
