@@ -5,6 +5,8 @@ import TagInfo from '@Src/components/@molecules/tagInfo';
 import TagRestaurant, {
   TagRestaurantSkeleton,
 } from '@Src/components/@molecules/tagRestaurant';
+import { SetCordinates } from '@Src/redux/actions/cordinates';
+import { RootStateType } from '@Src/redux/reducer';
 import {
   AtomButton,
   AtomImage,
@@ -17,6 +19,8 @@ import {
 import AtomCarrousell from '@sweetsyui/ui/build/@atoms/AtomCarruosell';
 import { IQueryFilter } from 'graphql';
 import { NextPageFC } from 'next';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 const tagsInfo = [
@@ -41,8 +45,26 @@ const tagsInfo = [
 ];
 
 const index: NextPageFC = () => {
-  const { data, loading } =
-    useQuery<IQueryFilter<'getRestaurants'>>(GETRESTAURANTS);
+  const cordinates = useSelector((state: RootStateType) => state.cordinates);
+  const { data, loading } = useQuery<IQueryFilter<'getRestaurants'>>(
+    GETRESTAURANTS,
+    {
+      skip: cordinates.lat === 0 && cordinates.lng === 0,
+    }
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        dispatch(
+          SetCordinates({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          })
+        );
+      });
+    }
+  }, [navigator.geolocation]);
   return (
     <>
       <AtomSeo
@@ -295,9 +317,26 @@ const index: NextPageFC = () => {
                   : []
               }
             >
-              {data?.getRestaurants?.map((e, idx) => (
-                <TagRestaurant key={e?.id} index={idx} {...e} />
-              ))}
+              {data?.getRestaurants
+                ?.slice()
+                ?.sort((a, b) => {
+                  const reduceA = Math.abs(
+                    (a?.reviews?.reduce(
+                      (acc, val) => acc + (val?.rating ?? 0),
+                      0
+                    ) ?? 0) / (a?.reviews?.length ?? 0)
+                  );
+                  const reduceB = Math.abs(
+                    (b?.reviews?.reduce(
+                      (acc, val) => acc + (val?.rating ?? 0),
+                      0
+                    ) ?? 0) / (b?.reviews?.length ?? 0)
+                  );
+                  return reduceB - reduceA;
+                })
+                ?.map((e, idx) => (
+                  <TagRestaurant key={e?.id} index={idx} {...e} />
+                ))}
             </AtomCarrousell>
           </AtomWrapper>
         </AtomWrapper>
@@ -387,16 +426,47 @@ const index: NextPageFC = () => {
                 }
               `}
               skeleton={
-                loading
+                loading || (cordinates.lat === 0 && cordinates.lng === 0)
                   ? Array.from({ length: 4 }, (_, idx) => (
                       <TagRestaurantSkeleton key={`${idx}`} index={idx} />
                     ))
                   : []
               }
             >
-              {data?.getRestaurants?.map((e, idx) => (
-                <TagRestaurant key={e?.id} index={idx} {...e} />
-              ))}
+              {data?.getRestaurants
+                ?.filter((e) => {
+                  const lat = e?.latlng?.lat || 0;
+                  const lng = e?.latlng?.lng || 0;
+                  const latMax = cordinates.lat + 0.004;
+                  const latMin = cordinates.lat - 0.004;
+                  const lngMax = cordinates.lng + 0.004;
+                  const lngMin = cordinates.lng - 0.004;
+                  return (
+                    lat <= latMax &&
+                    lat >= latMin &&
+                    lng <= lngMax &&
+                    lng >= lngMin
+                  );
+                })
+                ?.slice()
+                ?.sort((a, b) => {
+                  const reduceA = Math.abs(
+                    (a?.reviews?.reduce(
+                      (acc, val) => acc + (val?.rating ?? 0),
+                      0
+                    ) ?? 0) / (a?.reviews?.length ?? 0)
+                  );
+                  const reduceB = Math.abs(
+                    (b?.reviews?.reduce(
+                      (acc, val) => acc + (val?.rating ?? 0),
+                      0
+                    ) ?? 0) / (b?.reviews?.length ?? 0)
+                  );
+                  return reduceB - reduceA;
+                })
+                ?.map((e, idx) => (
+                  <TagRestaurant key={e?.id} index={idx} width="280px" {...e} />
+                ))}
             </AtomCarrousell>
           </AtomWrapper>
         </AtomWrapper>

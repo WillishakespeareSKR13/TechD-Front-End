@@ -128,13 +128,20 @@ const index: NextPageFC = () => {
 
       <AtomMap
         Markers={data?.getRestaurants
+          ?.filter(
+            (restaurant) =>
+              restaurant?.name?.toLowerCase().includes(search.toLowerCase()) ||
+              restaurant?.cuisine_type
+                ?.toLocaleLowerCase()
+                ?.includes(search.toLocaleLowerCase())
+          )
           ?.filter((e) => {
             const lat = e?.latlng?.lat || 0;
             const lng = e?.latlng?.lng || 0;
-            const latMax = cordinates.lat + 0.05;
-            const latMin = cordinates.lat - 0.05;
-            const lngMax = cordinates.lng + 0.05;
-            const lngMin = cordinates.lng - 0.05;
+            const latMax = cordinates.lat + 0.004;
+            const latMin = cordinates.lat - 0.004;
+            const lngMax = cordinates.lng + 0.004;
+            const lngMin = cordinates.lng - 0.004;
             return (
               lat <= latMax && lat >= latMin && lng <= lngMax && lng >= lngMin
             );
@@ -212,16 +219,32 @@ const index: NextPageFC = () => {
                     ?.filter((e) => {
                       const lat = e?.latlng?.lat || 0;
                       const lng = e?.latlng?.lng || 0;
-                      const latMax = cordinates.lat + 0.05;
-                      const latMin = cordinates.lat - 0.05;
-                      const lngMax = cordinates.lng + 0.05;
-                      const lngMin = cordinates.lng - 0.05;
+                      const latMax = cordinates.lat + 0.004;
+                      const latMin = cordinates.lat - 0.004;
+                      const lngMax = cordinates.lng + 0.004;
+                      const lngMin = cordinates.lng - 0.004;
                       return (
                         lat <= latMax &&
                         lat >= latMin &&
                         lng <= lngMax &&
                         lng >= lngMin
                       );
+                    })
+                    ?.slice()
+                    ?.sort((a, b) => {
+                      const reduceA = Math.abs(
+                        (a?.reviews?.reduce(
+                          (acc, val) => acc + (val?.rating ?? 0),
+                          0
+                        ) ?? 0) / (a?.reviews?.length ?? 0)
+                      );
+                      const reduceB = Math.abs(
+                        (b?.reviews?.reduce(
+                          (acc, val) => acc + (val?.rating ?? 0),
+                          0
+                        ) ?? 0) / (b?.reviews?.length ?? 0)
+                      );
+                      return reduceB - reduceA ? 1 : -1;
                     })
                     ?.map((e, idx) => (
                       <TagRestaurant

@@ -65,6 +65,18 @@ const AtomMap = withScriptjs(
           options={{
             strokeColor: '#a2271b',
           }}
+          onClick={(e) => {
+            setDefaultCenter({
+              lat: e.latLng.lat(),
+              lng: e.latLng.lng(),
+            });
+            dispatch(
+              SetCordinates({
+                lat: e.latLng.lat(),
+                lng: e.latLng.lng(),
+              })
+            );
+          }}
         />
         {Markers?.map((marker: any) => (
           <Marker

@@ -15,7 +15,7 @@ const createNoopStorage = () => {
     },
     removeItem(_key: any) {
       return Promise.resolve();
-    }
+    },
   };
 };
 
@@ -27,7 +27,7 @@ const storage =
 const PersistConfig = {
   key: 'root',
   storage,
-  blacklist: ['modal', 'sideBar', 'quotation']
+  blacklist: ['modal', 'cordinates'],
 };
 
 const PersistedReducer = persistReducer(PersistConfig, RootReducer);
