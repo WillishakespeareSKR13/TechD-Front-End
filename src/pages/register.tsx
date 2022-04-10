@@ -169,6 +169,13 @@ const index: NextPageFC = () => {
               inicia sesión
             </AtomLink>
           </AtomText>
+          <AtomText>o</AtomText>
+          <AtomText>
+            Tienes un negocio?{' '}
+            <AtomLink link="/registerCompany" color="#d82c2c">
+              Registralo
+            </AtomLink>
+          </AtomText>
           <AtomButton
             onClick={() => {
               formik.handleSubmit();

@@ -110,7 +110,7 @@ const index: NextPageFC = () => {
               color: #363232;
             `}
           >
-            Registrata tu empresa
+            Registra tu empresa
           </AtomText>
           <AtomInput
             id="email"
