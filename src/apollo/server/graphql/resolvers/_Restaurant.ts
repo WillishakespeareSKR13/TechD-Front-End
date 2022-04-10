@@ -11,7 +11,9 @@ const resolvers: Resolvers = {
         .populate('company')
         .populate('reviews.user'),
     getRestaurantById: async (_, { id }) => {
-      return await Restaurants.findById(id);
+      return await Restaurants.findById(id)
+        .populate('company')
+        .populate('reviews.user');
     },
   },
   Mutation: {

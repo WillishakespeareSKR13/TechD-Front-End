@@ -10,7 +10,7 @@ import { setContext } from '@apollo/client/link/context';
 import cookie from 'js-cookie';
 // import { WebSocketLink } from '@apollo/client/link/ws';
 // import { getMainDefinition } from '@apollo/client/utilities';
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({ addTypename: false });
 
 // const isWindows = typeof window === 'undefined';
 
