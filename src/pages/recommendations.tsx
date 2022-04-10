@@ -1,46 +1,28 @@
 import { useQuery } from '@apollo/client';
 import { css } from '@emotion/react';
 import { GETRESTAURANTS } from '@Src/apollo/client/query/restaurants';
-import TagInfo from '@Src/components/@molecules/tagInfo';
+import AtomMap from '@Src/components/@atoms/AtomMap';
 import TagRestaurant, {
   TagRestaurantSkeleton,
 } from '@Src/components/@molecules/tagRestaurant';
+import { RootStateType } from '@Src/redux/reducer';
 import {
   AtomButton,
-  AtomImage,
+  AtomIcon,
   AtomInput,
-  AtomLink,
   AtomSeo,
   AtomText,
   AtomWrapper,
 } from '@sweetsyui/ui';
-import AtomCarrousell from '@sweetsyui/ui/build/@atoms/AtomCarruosell';
+import { AnimatePresence } from 'framer-motion';
 import { IQueryFilter } from 'graphql';
 import { NextPageFC } from 'next';
-import { v4 as uuidv4 } from 'uuid';
-
-const tagsInfo = [
-  {
-    id: uuidv4(),
-    icon: '/icons/tagsinfo/1.svg',
-    title: 'Los mejores lugares para comer',
-    description: 'Encuentra +500 Restaurantes',
-  },
-  {
-    id: uuidv4(),
-    icon: '/icons/tagsinfo/2.svg',
-    title: 'Conoce a los mas valorados',
-    description: 'Millones de restaurantes a un click',
-  },
-  {
-    id: uuidv4(),
-    icon: '/icons/tagsinfo/3.svg',
-    title: 'Los mejores menus de cocina',
-    description: 'Disfrutas de diferentes tipos de comidas',
-  },
-];
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const index: NextPageFC = () => {
+  const cordinates = useSelector((state: RootStateType) => state.cordinates);
+  const [search, setSearch] = useState('');
   const { data, loading } =
     useQuery<IQueryFilter<'getRestaurants'>>(GETRESTAURANTS);
   return (
@@ -51,28 +33,22 @@ const index: NextPageFC = () => {
         website="https://melp.vercel.app/"
         icon="/favicon.png"
       />
+
       <AtomWrapper
         customCSS={css`
           align-items: center;
           justify-content: center;
-          padding: 140px 0px 100px 0px;
-          background-color: #a2271b;
+          padding: 120px 0px 100px 0px;
+          background: linear-gradient(
+              0deg,
+              rgba(1, 11, 1, 0.7) 0%,
+              rgba(79, 29, 29, 0.5) 50%
+            ),
+            url('/images/search.webp');
           position: relative;
+          background-size: cover;
         `}
       >
-        <AtomImage
-          alt="plate"
-          src="/images/plate.png"
-          customCSS={css`
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 45%;
-            @media only screen and (max-width: 980px) {
-              display: none;
-            }
-          `}
-        />
         <AtomWrapper
           customCSS={css`
             max-width: 1440px;
@@ -94,17 +70,7 @@ const index: NextPageFC = () => {
               line-height: 50px;
             `}
           >
-            Encuentra los mejores restaurantes <br /> a un click de distancia.
-          </AtomText>
-          <AtomText
-            customCSS={css`
-              font-size: 16px;
-              color: #ffffff;
-            `}
-          >
-            Los mejores platos y precios a tu disponibilidad. Tambien podrás
-            <br />
-            ver recomendaciones de restaurantes cerca de ti.
+            Los Mejores restaurantes cerca de ti
           </AtomText>
           <AtomWrapper
             customCSS={css`
@@ -114,6 +80,7 @@ const index: NextPageFC = () => {
               align-items: center;
               background-color: #ffffff;
               width: 100%;
+              margin-top: 10px;
               max-width: 70%;
               border-radius: 8px;
               box-shadow: (0px 5px 11px rgba(0, 0, 0, 0.25));
@@ -126,11 +93,12 @@ const index: NextPageFC = () => {
             <AtomInput
               border="none"
               labelWidth="100%"
-              placeholder="¿Que quieres almorzar hoy?"
+              placeholder="Direcion, Ciudad, Estado"
               placeholderColor="#A4A4A4"
               padding="0px 30px"
-              height="70px"
+              height="50px"
               fontSize="14px"
+              onChange={(e) => setSearch(e.target.value)}
             />
             <AtomButton
               whileHover={{
@@ -140,18 +108,47 @@ const index: NextPageFC = () => {
               }}
               whileTap={{ scale: 0.98, opacity: 0.8 }}
               customCSS={css`
-                height: 60px;
+                height: 40px;
                 background-color: #e93c2a;
-                padding: 0px 60px;
+                padding: 0px 20px;
                 margin: 0px 5px;
                 font-size: 14px;
               `}
             >
-              Buscar
+              <AtomIcon
+                color="white"
+                width="20px"
+                height="20px"
+                icon="/icons/search.svg"
+              />
             </AtomButton>
           </AtomWrapper>
         </AtomWrapper>
       </AtomWrapper>
+
+      <AtomMap
+        Markers={data?.getRestaurants
+          ?.filter((e) => {
+            const lat = e?.latlng?.lat || 0;
+            const lng = e?.latlng?.lng || 0;
+            const latMax = cordinates.lat + 0.05;
+            const latMin = cordinates.lat - 0.05;
+            const lngMax = cordinates.lng + 0.05;
+            const lngMin = cordinates.lng - 0.05;
+            return (
+              lat <= latMax && lat >= latMin && lng <= lngMax && lng >= lngMin
+            );
+          })
+          ?.map((e) => ({
+            id: e?.name,
+            lat: e?.latlng?.lat,
+            lng: e?.latlng?.lng,
+          }))}
+        googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBogrrOMSmXlcjuqv127MDoOVlw55ykqYY&v=3.exp&libraries=geometry,drawing,places"
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `500px`, width: '100%' }} />}
+        mapElement={<div style={{ height: `100%` }} />}
+      />
 
       <AtomWrapper
         customCSS={css`
@@ -168,14 +165,9 @@ const index: NextPageFC = () => {
       >
         <AtomWrapper
           customCSS={css`
-            width: 80%;
-            align-items: center;
-            justify-content: center;
-            padding: 50px 0px;
-            gap: 30px;
-            @media only screen and (max-width: 980px) {
-              width: 100%;
-            }
+            width: 100%;
+            padding: 25px 0px;
+            gap: 20px;
           `}
         >
           <AtomText
@@ -187,7 +179,7 @@ const index: NextPageFC = () => {
               text-align: center;
             `}
           >
-            ¿Por qué usar Melp para tu busqueda?
+            Los Mejores restaurantes cerca de ti
           </AtomText>
           <AtomWrapper
             customCSS={css`
@@ -195,209 +187,51 @@ const index: NextPageFC = () => {
               flex-wrap: wrap;
               flex-direction: row;
               justify-content: space-between;
-              gap: 20px;
+              gap: 25px;
             `}
           >
-            {tagsInfo.map((e, idx) => (
-              <TagInfo key={e.id} index={idx} {...e} />
-            ))}
-          </AtomWrapper>
-        </AtomWrapper>
-
-        <AtomWrapper
-          customCSS={css`
-            width: 100%;
-            padding: 25px 0px;
-            gap: 20px;
-          `}
-        >
-          <AtomWrapper
-            customCSS={css`
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              align-items: center;
-            `}
-          >
-            <AtomText
-              customCSS={css`
-                font-weight: 700;
-                font-size: 24px;
-                color: #292929;
-                font-weight: bold;
-                line-height: 1.2;
-              `}
-            >
-              Los Restaurantes mas valorados
-            </AtomText>
-            <AtomLink
-              link="/restaurants"
-              customCSS={css`
-                font-weight: 700;
-                font-size: 14px;
-                color: #df6a6a;
-                line-height: 1.2;
-              `}
-            >
-              Ver todos
-            </AtomLink>
-          </AtomWrapper>
-          <AtomWrapper
-            customCSS={css`
-              display: flex;
-              flex-wrap: wrap;
-              flex-direction: row;
-              justify-content: space-between;
-              height: 300px;
-            `}
-          >
-            <AtomCarrousell
-              height="330px"
-              swiperProps={{
-                slidesPerView: 4,
-                spaceBetween: 20,
-                breakpoints: {
-                  320: {
-                    slidesPerView: 1,
-                    slidesPerGroup: 1,
-                    spaceBetween: 20,
-                  },
-                  480: {
-                    slidesPerView: 2,
-                    slidesPerGroup: 2,
-                    spaceBetween: 30,
-                  },
-                  720: {
-                    slidesPerView: 3,
-                    slidesPerGroup: 3,
-                    spaceBetween: 40,
-                  },
-                  1280: {
-                    slidesPerView: 4,
-                    slidesPerGroup: 4,
-                    spaceBetween: 20,
-                  },
-                },
-              }}
-              customCSS={css`
-                .swiper-slide {
-                  align-items: flex-start;
-                }
-                .swiper-pagination-bullets.swiper-pagination-horizontal {
-                  bottom: 0px;
-                }
-              `}
-              skeleton={
-                loading
-                  ? Array.from({ length: 4 }, (_, idx) => (
-                      <TagRestaurantSkeleton key={`${idx}`} index={idx} />
-                    ))
-                  : []
-              }
-            >
-              {data?.getRestaurants?.map((e, idx) => (
-                <TagRestaurant key={e?.id} index={idx} {...e} />
-              ))}
-            </AtomCarrousell>
-          </AtomWrapper>
-        </AtomWrapper>
-
-        <AtomWrapper
-          customCSS={css`
-            width: 100%;
-            padding: 25px 0px;
-            gap: 20px;
-          `}
-        >
-          <AtomWrapper
-            customCSS={css`
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              align-items: center;
-            `}
-          >
-            <AtomText
-              customCSS={css`
-                font-weight: 700;
-                font-size: 24px;
-                color: #292929;
-                font-weight: bold;
-                line-height: 1.2;
-              `}
-            >
-              Restaurantes cerca de tu Zona
-            </AtomText>
-            <AtomLink
-              link="/restaurants"
-              customCSS={css`
-                font-weight: 700;
-                font-size: 14px;
-                color: #df6a6a;
-                line-height: 1.2;
-              `}
-            >
-              Ver todos
-            </AtomLink>
-          </AtomWrapper>
-          <AtomWrapper
-            customCSS={css`
-              display: flex;
-              flex-wrap: wrap;
-              flex-direction: row;
-              justify-content: space-between;
-              gap: 20px;
-              min-height: 290px;
-            `}
-          >
-            <AtomCarrousell
-              height="330px"
-              swiperProps={{
-                slidesPerView: 4,
-                spaceBetween: 20,
-                breakpoints: {
-                  320: {
-                    slidesPerView: 1,
-                    slidesPerGroup: 1,
-                    spaceBetween: 20,
-                  },
-                  480: {
-                    slidesPerView: 2,
-                    slidesPerGroup: 2,
-                    spaceBetween: 30,
-                  },
-                  720: {
-                    slidesPerView: 3,
-                    slidesPerGroup: 3,
-                    spaceBetween: 40,
-                  },
-                  1280: {
-                    slidesPerView: 4,
-                    slidesPerGroup: 4,
-                    spaceBetween: 20,
-                  },
-                },
-              }}
-              customCSS={css`
-                .swiper-slide {
-                  align-items: flex-start;
-                }
-                .swiper-pagination-bullets.swiper-pagination-horizontal {
-                  bottom: 0px;
-                }
-              `}
-              skeleton={
-                loading
-                  ? Array.from({ length: 4 }, (_, idx) => (
-                      <TagRestaurantSkeleton key={`${idx}`} index={idx} />
-                    ))
-                  : []
-              }
-            >
-              {data?.getRestaurants?.map((e, idx) => (
-                <TagRestaurant key={e?.id} index={idx} {...e} />
-              ))}
-            </AtomCarrousell>
+            <AnimatePresence exitBeforeEnter>
+              {loading
+                ? Array.from({ length: 25 }, (_, idx) => (
+                    <TagRestaurantSkeleton
+                      key={`${idx}`}
+                      index={idx}
+                      width="280px"
+                    />
+                  ))
+                : data?.getRestaurants
+                    ?.filter(
+                      (restaurant) =>
+                        restaurant?.name
+                          ?.toLowerCase()
+                          .includes(search.toLowerCase()) ||
+                        restaurant?.cuisine_type
+                          ?.toLocaleLowerCase()
+                          ?.includes(search.toLocaleLowerCase())
+                    )
+                    ?.filter((e) => {
+                      const lat = e?.latlng?.lat || 0;
+                      const lng = e?.latlng?.lng || 0;
+                      const latMax = cordinates.lat + 0.05;
+                      const latMin = cordinates.lat - 0.05;
+                      const lngMax = cordinates.lng + 0.05;
+                      const lngMin = cordinates.lng - 0.05;
+                      return (
+                        lat <= latMax &&
+                        lat >= latMin &&
+                        lng <= lngMax &&
+                        lng >= lngMin
+                      );
+                    })
+                    ?.map((e, idx) => (
+                      <TagRestaurant
+                        key={e?.id}
+                        index={idx}
+                        width="280px"
+                        {...e}
+                      />
+                    ))}
+            </AnimatePresence>
           </AtomWrapper>
         </AtomWrapper>
       </AtomWrapper>

@@ -45,6 +45,7 @@ const index: NextPageFC = () => {
             ),
             url('/images/search.webp');
           position: relative;
+          background-size: cover;
         `}
       >
         <AtomWrapper

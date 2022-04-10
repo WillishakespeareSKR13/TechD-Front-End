@@ -13,3 +13,11 @@ export const UPDATERESTAURANT = gql`
     }
   }
 `;
+
+export const NEWRESTAURANT = gql`
+  mutation newRestaurant($input: InputRestaurant) {
+    newRestaurant(input: $input) {
+      id
+    }
+  }
+`;
