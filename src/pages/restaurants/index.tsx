@@ -152,6 +152,9 @@ const index: NextPageFC = () => {
               flex-direction: row;
               justify-content: space-between;
               gap: 25px;
+              @media only screen and (max-width: 980px) {
+                justify-content: center;
+              }
             `}
           >
             <AnimatePresence exitBeforeEnter>

@@ -9,6 +9,7 @@ import { SetCordinates } from '@Src/redux/actions/cordinates';
 import { RootStateType } from '@Src/redux/reducer';
 import {
   AtomButton,
+  AtomIcon,
   AtomImage,
   AtomInput,
   AtomLink,
@@ -110,6 +111,10 @@ const index: NextPageFC = () => {
               color: #ffffff;
               font-weight: bold;
               line-height: 50px;
+              @media only screen and (max-width: 980px) {
+                font-size: 36px;
+                text-align: center;
+              }
             `}
           >
             Encuentra los mejores restaurantes <br /> a un click de distancia.
@@ -118,6 +123,10 @@ const index: NextPageFC = () => {
             customCSS={css`
               font-size: 16px;
               color: #ffffff;
+              @media only screen and (max-width: 980px) {
+                font-size: 14px;
+                text-align: center;
+              }
             `}
           >
             Los mejores platos y precios a tu disponibilidad. Tambien podrás
@@ -163,9 +172,27 @@ const index: NextPageFC = () => {
                 padding: 0px 60px;
                 margin: 0px 5px;
                 font-size: 14px;
+                div {
+                  display: none;
+                }
+                @media only screen and (max-width: 980px) {
+                  padding: 0px 20px;
+                  div {
+                    display: flex;
+                  }
+                  span {
+                    display: none;
+                  }
+                }
               `}
             >
-              Buscar
+              <AtomText color="white">Buscar</AtomText>
+              <AtomIcon
+                color="white"
+                width="20px"
+                height="20px"
+                icon="/icons/search.svg"
+              />
             </AtomButton>
           </AtomWrapper>
         </AtomWrapper>
@@ -244,6 +271,10 @@ const index: NextPageFC = () => {
                 color: #292929;
                 font-weight: bold;
                 line-height: 1.2;
+                @media only screen and (max-width: 980px) {
+                  width: calc(100% - 100px);
+                  font-size: 18px;
+                }
               `}
             >
               Los Restaurantes mas valorados
@@ -359,6 +390,10 @@ const index: NextPageFC = () => {
                 color: #292929;
                 font-weight: bold;
                 line-height: 1.2;
+                @media only screen and (max-width: 980px) {
+                  width: calc(100% - 100px);
+                  font-size: 18px;
+                }
               `}
             >
               Restaurantes cerca de tu Zona

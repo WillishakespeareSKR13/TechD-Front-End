@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStateType } from '@Src/redux/reducer';
 import { Logout } from '@Src/redux/actions/user';
+import Sidebar from './sidebar';
 
 type props = {
   backgroundColor?: string;
@@ -86,12 +87,16 @@ const Header: FC<props> = (props) => {
             color="#ffffff"
           />
         </AtomButton>
+        <Sidebar />
         <AtomWrapper
           customCSS={css`
             width: max-content;
             gap: 20px;
             display: flex;
             flex-direction: row;
+            @media only screen and (max-width: 980px) {
+              display: none;
+            }
           `}
         >
           <AtomButton

@@ -282,6 +282,9 @@ const index: NextPageFC = () => {
               flex-direction: row;
               justify-content: space-between;
               gap: 25px;
+              @media only screen and (max-width: 980px) {
+                flex-direction: column;
+              }
             `}
           >
             <AtomWrapper
@@ -289,6 +292,9 @@ const index: NextPageFC = () => {
                 width: 60%;
                 padding: 25px 0px;
                 gap: 20px;
+                @media only screen and (max-width: 980px) {
+                  width: 100%;
+                }
               `}
             >
               {data?.getRestaurantById?.reviews?.map((review, idx) => (
@@ -445,12 +451,18 @@ const index: NextPageFC = () => {
                     margin-top: 20px;
                     display: flex;
                     flex-direction: row;
+                    @media only screen and (max-width: 980px) {
+                      justify-content: space-between;
+                    }
                   `}
                 >
                   <AtomText
                     customCSS={css`
                       margin-right: 10px;
                       color: #a2271b;
+                      @media only screen and (max-width: 980px) {
+                        width: calc(100% - 200px);
+                      }
                     `}
                   >
                     Inicia sesión para poder escribir una reseña
@@ -471,6 +483,9 @@ const index: NextPageFC = () => {
                 width: 30%;
                 padding: 25px 0px;
                 gap: 20px;
+                @media only screen and (max-width: 980px) {
+                  width: 100%;
+                }
               `}
             >
               <AtomWrapper
@@ -488,6 +503,9 @@ const index: NextPageFC = () => {
                     color: #292929;
                     font-weight: bold;
                     line-height: 1.2;
+                    @media only screen and (max-width: 980px) {
+                      width: calc(100% - 100px);
+                    }
                   `}
                 >
                   Otros restaurantes
