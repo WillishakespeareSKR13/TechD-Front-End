@@ -401,4 +401,4 @@ const index: NextPageFC = () => {
 
 export default index;
 
-index.Layout = 'public';
+index.Layout = 'dashboard';
