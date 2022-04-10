@@ -31,31 +31,33 @@ const AtomMapNew = withScriptjs(
     }, [navigator]);
 
     return (
-      <GoogleMap
-        onClick={(e) => {
-          dispatch(
-            SetCordinatesNew({
+      <>
+        <GoogleMap
+          onClick={(e) => {
+            dispatch(
+              SetCordinatesNew({
+                lat: e.latLng.lat(),
+                lng: e.latLng.lng(),
+              })
+            );
+            setDefaultCenter({
               lat: e.latLng.lat(),
               lng: e.latLng.lng(),
-            })
-          );
-          setDefaultCenter({
-            lat: e.latLng.lat(),
-            lng: e.latLng.lng(),
-          });
-        }}
-        center={defaultCenter}
-        zoom={16}
-        defaultCenter={defaultCenter}
-        defaultZoom={16}
-      >
-        <Marker
-          position={{
-            lat: defaultCenter.lat,
-            lng: defaultCenter.lng,
+            });
           }}
-        />
-      </GoogleMap>
+          center={defaultCenter}
+          zoom={16}
+          defaultCenter={defaultCenter}
+          defaultZoom={16}
+        >
+          <Marker
+            position={{
+              lat: defaultCenter.lat,
+              lng: defaultCenter.lng,
+            }}
+          />
+        </GoogleMap>
+      </>
     );
   })
 );

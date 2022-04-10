@@ -31,40 +31,8 @@ const AtomMap = withScriptjs(
     }, [navigator]);
 
     return (
-      <GoogleMap
-        onClick={(e) => {
-          setDefaultCenter({
-            lat: e.latLng.lat(),
-            lng: e.latLng.lng(),
-          });
-          dispatch(
-            SetCordinates({
-              lat: e.latLng.lat(),
-              lng: e.latLng.lng(),
-            })
-          );
-        }}
-        center={defaultCenter}
-        zoom={16}
-        defaultCenter={defaultCenter}
-        defaultZoom={16}
-      >
-        <Marker
-          position={{
-            lat: defaultCenter.lat,
-            lng: defaultCenter.lng,
-          }}
-        />
-
-        <Circle
-          center={{
-            lat: defaultCenter.lat,
-            lng: defaultCenter.lng,
-          }}
-          radius={500}
-          options={{
-            strokeColor: '#a2271b',
-          }}
+      <>
+        <GoogleMap
           onClick={(e) => {
             setDefaultCenter({
               lat: e.latLng.lat(),
@@ -77,17 +45,51 @@ const AtomMap = withScriptjs(
               })
             );
           }}
-        />
-        {Markers?.map((marker: any) => (
+          center={defaultCenter}
+          zoom={16}
+          defaultCenter={defaultCenter}
+          defaultZoom={16}
+        >
           <Marker
-            key={marker.id}
             position={{
-              lat: marker.lat,
-              lng: marker.lng,
+              lat: defaultCenter.lat,
+              lng: defaultCenter.lng,
             }}
           />
-        ))}
-      </GoogleMap>
+
+          <Circle
+            center={{
+              lat: defaultCenter.lat,
+              lng: defaultCenter.lng,
+            }}
+            radius={500}
+            options={{
+              strokeColor: '#a2271b',
+            }}
+            onClick={(e) => {
+              setDefaultCenter({
+                lat: e.latLng.lat(),
+                lng: e.latLng.lng(),
+              });
+              dispatch(
+                SetCordinates({
+                  lat: e.latLng.lat(),
+                  lng: e.latLng.lng(),
+                })
+              );
+            }}
+          />
+          {Markers?.map((marker: any) => (
+            <Marker
+              key={marker.id}
+              position={{
+                lat: marker.lat,
+                lng: marker.lng,
+              }}
+            />
+          ))}
+        </GoogleMap>
+      </>
     );
   })
 );
