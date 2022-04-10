@@ -5,7 +5,7 @@ import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import withScriptjs from 'react-google-maps/lib/withScriptjs';
 import { useDispatch } from 'react-redux';
 
-const AtomMapNew = withScriptjs(
+const AtomMapNew: any = withScriptjs(
   withGoogleMap(() => {
     const dispatch = useDispatch();
     const [defaultCenter, setDefaultCenter] = useState({
