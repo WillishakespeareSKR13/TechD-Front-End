@@ -1,14 +1,23 @@
 import { css } from '@emotion/react';
-import { AtomIcon, AtomImage, AtomText, AtomWrapper } from '@sweetsyui/ui';
+import {
+  AtomButton,
+  AtomIcon,
+  AtomImage,
+  AtomText,
+  AtomWrapper,
+} from '@sweetsyui/ui';
 import { IRestaurant } from 'graphql';
+import { useRouter } from 'next/router';
 import { FC, useMemo } from 'react';
 
 type Props = IRestaurant & {
   index?: number;
+  width?: string;
 };
 
 const TagRestaurant = (props: Props) => {
-  const { id, photo, name, cuisine_type, reviews, index } = props;
+  const { id, photo, name, cuisine_type, reviews, index, width } = props;
+  const router = useRouter();
   const rating = useMemo(
     () =>
       Math.abs(
@@ -18,8 +27,11 @@ const TagRestaurant = (props: Props) => {
     [reviews]
   );
   return (
-    <AtomWrapper
+    <AtomButton
       key={id}
+      onClick={() => {
+        router.push(`/restaurants/${id}`);
+      }}
       initial={{
         x: -10,
         opacity: 0,
@@ -28,12 +40,18 @@ const TagRestaurant = (props: Props) => {
         x: 0,
         opacity: 1,
       }}
+      exit={{
+        x: 10,
+        opacity: 0,
+      }}
       transition={{
         duration: 0.4,
         delay: (index ?? 0) * 0.2,
       }}
       customCSS={css`
-        width: 320px;
+        width: ${width ?? '320px'};
+        padding: 0px;
+        background-color: transparent;
         display: flex;
         gap: 5px;
         flex-direction: column;
@@ -165,7 +183,7 @@ const TagRestaurant = (props: Props) => {
           </>
         )}
       </AtomWrapper>
-    </AtomWrapper>
+    </AtomButton>
   );
 };
 
@@ -174,10 +192,11 @@ export default TagRestaurant;
 type PropsSkeleton = {
   key?: string;
   index?: number;
+  width?: string;
 };
 
 export const TagRestaurantSkeleton: FC<PropsSkeleton> = (props) => {
-  const { key, index } = props;
+  const { key, index, width } = props;
   return (
     <AtomWrapper
       key={key}
@@ -194,7 +213,7 @@ export const TagRestaurantSkeleton: FC<PropsSkeleton> = (props) => {
         delay: (index ?? 0) * 0.2,
       }}
       customCSS={css`
-        width: 320px;
+        width: ${width ?? '320px'};
         display: flex;
         gap: 5px;
         flex-direction: column;

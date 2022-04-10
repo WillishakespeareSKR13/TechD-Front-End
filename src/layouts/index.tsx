@@ -1,8 +1,12 @@
 import { FC } from 'react';
 import DefaultLayout from './_defaultLayout';
+import LoginLayout from './_loginLayout';
+import PublicLayout from './_publicLayout';
 
 export const AllLayouts = {
   default: DefaultLayout,
+  login: LoginLayout,
+  public: PublicLayout,
 };
 
 export type LayoutType = {

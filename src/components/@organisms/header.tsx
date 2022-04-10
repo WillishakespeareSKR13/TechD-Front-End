@@ -6,8 +6,20 @@ import {
   AtomWrapper,
 } from '@sweetsyui/ui';
 import { css } from '@emotion/react';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootStateType } from '@Src/redux/reducer';
+import { Logout } from '@Src/redux/actions/user';
 
-const Header: FC = () => {
+type props = {
+  backgroundColor?: string;
+};
+
+const Header: FC<props> = (props) => {
+  const { backgroundColor } = props;
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootStateType) => state.user);
   const [scroll, setScroll] = useState(false);
 
   const getScroll = () => {
@@ -33,7 +45,9 @@ const Header: FC = () => {
         height: 90px;
         position: fixed;
         z-index: 100;
-        background-color: ${scroll ? '#a2271b' : 'transparent'};
+        background-color: ${scroll
+          ? '#a2271b'
+          : backgroundColor ?? 'transparent'};
         ${scroll &&
         css`
           box-shadow: 0px 0px 10px 5px #00000034;
@@ -55,12 +69,23 @@ const Header: FC = () => {
           }
         `}
       >
-        <AtomIcon
-          icon="/icons/melp.svg"
-          width="100px"
-          height="30px"
-          color="#ffffff"
-        />
+        <AtomButton
+          onClick={() => {
+            router.push('/');
+          }}
+          customCSS={css`
+            display: flex;
+            padding: 0px;
+            background-color: transparent;
+          `}
+        >
+          <AtomIcon
+            icon="/icons/melp.svg"
+            width="100px"
+            height="30px"
+            color="#ffffff"
+          />
+        </AtomButton>
         <AtomWrapper
           customCSS={css`
             width: max-content;
@@ -70,6 +95,9 @@ const Header: FC = () => {
           `}
         >
           <AtomButton
+            onClick={() => {
+              router.push('/recommendations');
+            }}
             customCSS={css`
               display: flex;
               justify-content: center;
@@ -93,18 +121,77 @@ const Header: FC = () => {
             />
             Recomendaciones
           </AtomButton>
-          <AtomButton
-            customCSS={css`
-              background-color: #ffffff;
-              font-size: 14px;
-              font-weight: 600;
-              padding: 10px 30px;
-              border-radius: 4px;
-              color: #141414;
-            `}
-          >
-            Login
-          </AtomButton>
+          {user?.id ? (
+            <>
+              <AtomButton
+                onClick={() => {
+                  router.push('/feed');
+                }}
+                customCSS={css`
+                  border: 1px solid #ffffff;
+                  color: #ffffff;
+                  background-color: transparent;
+                  font-size: 14px;
+                  font-weight: 600;
+                  padding: 8px 30px;
+                  border-radius: 4px;
+                `}
+              >
+                Feed
+              </AtomButton>
+              <AtomButton
+                onClick={() => {
+                  dispatch(Logout());
+                  location.reload();
+                }}
+                customCSS={css`
+                  border: 1px solid #ffffff;
+                  background-color: #ffffff;
+                  font-size: 14px;
+                  font-weight: 600;
+                  padding: 8px 30px;
+                  border-radius: 4px;
+                  color: #141414;
+                `}
+              >
+                Cerrar Sesión
+              </AtomButton>
+            </>
+          ) : (
+            <>
+              <AtomButton
+                onClick={() => {
+                  router.push('/register');
+                }}
+                customCSS={css`
+                  border: 1px solid #ffffff;
+                  color: #ffffff;
+                  background-color: transparent;
+                  font-size: 14px;
+                  font-weight: 600;
+                  padding: 8px 30px;
+                  border-radius: 4px;
+                `}
+              >
+                Registrate
+              </AtomButton>
+              <AtomButton
+                onClick={() => {
+                  router.push('/login');
+                }}
+                customCSS={css`
+                  background-color: #ffffff;
+                  font-size: 14px;
+                  font-weight: 600;
+                  padding: 10px 30px;
+                  border-radius: 4px;
+                  color: #141414;
+                `}
+              >
+                Iniciar Sesión
+              </AtomButton>
+            </>
+          )}
         </AtomWrapper>
       </AtomWrapper>
     </AtomContainer>

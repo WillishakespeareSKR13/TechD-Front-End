@@ -66,6 +66,7 @@ const Footer: FC = () => {
           `}
         >
           <AtomLink
+            link="/recommendations"
             customCSS={css`
               font-size: 16px;
               font-weight: 500;
