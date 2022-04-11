@@ -5,6 +5,7 @@ import {
   GETRESTAURANTBYID,
   GETRESTAURANTS,
 } from '@Src/apollo/client/query/restaurants';
+import AtomMapEdit from '@Src/components/@atoms/AtomMapEdit';
 import TagComment from '@Src/components/@molecules/tagComment';
 import TagRestaurant, {
   TagRestaurantSkeleton,
@@ -568,6 +569,16 @@ const index: NextPageFC = () => {
             </AtomWrapper>
           </AtomWrapper>
         </AtomWrapper>
+        <AtomMapEdit
+          cordinates={{
+            lat: data?.getRestaurantById?.latlng?.lat ?? 0,
+            lng: data?.getRestaurantById?.latlng?.lng ?? 0,
+          }}
+          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBogrrOMSmXlcjuqv127MDoOVlw55ykqYY&v=3.exp&libraries=geometry,drawing,places"
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `400px`, width: '100%' }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+        />
       </AtomWrapper>
     </>
   );
