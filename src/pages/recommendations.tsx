@@ -23,8 +23,12 @@ import { useSelector } from 'react-redux';
 const index: NextPageFC = () => {
   const cordinates = useSelector((state: RootStateType) => state.cordinates);
   const [search, setSearch] = useState('');
-  const { data, loading } =
-    useQuery<IQueryFilter<'getRestaurants'>>(GETRESTAURANTS);
+  const { data, loading } = useQuery<IQueryFilter<'getRestaurants'>>(
+    GETRESTAURANTS,
+    {
+      fetchPolicy: 'no-cache',
+    }
+  );
   return (
     <>
       <AtomSeo
